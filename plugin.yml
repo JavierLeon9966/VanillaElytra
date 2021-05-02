@@ -1,5 +1,5 @@
 name: VanillaElytra
-soft-depend: Fireworks
+softdepend: Fireworks
 main: JavierLeon9966\VanillaElytra\VanillaElytra
 author: JavierLeon9966
 version: 1.0.0
