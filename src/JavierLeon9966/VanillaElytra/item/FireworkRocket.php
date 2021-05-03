@@ -36,15 +36,15 @@ class FireworkRocket extends Fireworks{
 			$pk->link = new EntityLink($player->getId(), $entity->getId(), EntityLink::TYPE_PASSENGER, true, true);
 			$player->getLevel()->broadcastPacketToViewers($player, $pk);
 
-			$scheduler = $player->getServer()->getPluginManager()->getPlugin('VanillaElytra')->getScheduler();
-			$task = $scheduler->scheduleRepeatingTask(new ClosureTask(static function() use($player): void{
-				if($player->isOnline() and $player->getArmorInventory()->getChestplate() instanceof Elytra and $player->getGenericFlag(Entity::DATA_FLAG_GLIDING)){
+			$duration = 20 * $this->getFlightDuration();
+			$task = $player->getServer()->getPluginManager()->getPlugin('VanillaElytra')->getScheduler()->scheduleRepeatingTask(new ClosureTask(static function() use($duration, $player, &$task): void{
+				static $ticks = 0;
+				if(++$ticks >= $duration or !$player->isOnline()){
+					$task->cancel();
+				}elseif($player->getArmorInventory()->getChestplate() instanceof Elytra and $player->getGenericFlag(Entity::DATA_FLAG_GLIDING)){
 					$player->setMotion($player->getDirectionVector()->multiply(1.8));
 				}
 			}), 1);
-			$scheduler->scheduleDelayedTask(new ClosureTask(static function() use($task): void{
-				$task->cancel();
-			}), 20 * $this->getFlightDuration());
 
 			return true;
 		}
