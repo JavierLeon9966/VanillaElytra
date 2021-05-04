@@ -4,9 +4,5 @@ main: JavierLeon9966\VanillaElytra\VanillaElytra
 author: JavierLeon9966
 version: 1.0.0
 api: 4.0.0
-mcpe-protocol: [
-	390, 407, 408, #v1.14.60-v1.16.61
-	419, 422, 428, #v1.16.101-v1.16.210
-	431 #v1.16.221
-]
+mcpe-protocol: [422, 428, 431]
 description: A plugin that implements vanilla Elytra into PocketMine-MP
