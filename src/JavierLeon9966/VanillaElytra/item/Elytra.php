@@ -8,10 +8,6 @@ use pocketmine\item\Durable;
 
 class Elytra extends Durable{
 
-	public function __construct(int $meta = 0){
-		parent::__construct(self::ELYTRA, $meta, 'Elytra');
-	}
-
 	public function getMaxDurability(): int{
 		return 433;
 	}
