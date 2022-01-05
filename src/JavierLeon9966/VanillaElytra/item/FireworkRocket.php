@@ -34,7 +34,6 @@ class FireworkRocket extends Fireworks{
 			throw new AssumptionFailedError;
 		}
 
-		//TODO: Change this to vanilla boosting
 		$plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(static function() use($duration, $entity, $player): void{
 			static $ticks = 0;
 			if(!$player->isOnline() or ++$ticks >= $duration){
