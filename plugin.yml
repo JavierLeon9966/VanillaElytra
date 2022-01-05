@@ -3,6 +3,5 @@ softdepend: Firework
 main: JavierLeon9966\VanillaElytra\VanillaElytra
 author: JavierLeon9966
 version: 1.0.0
-api: 4.0.0
-mcpe-protocol: [422, 428, 431]
+api: 4.1.0
 description: A plugin that implements vanilla Elytra into PocketMine-MP

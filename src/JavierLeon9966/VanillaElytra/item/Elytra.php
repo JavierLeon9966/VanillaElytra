@@ -4,15 +4,8 @@ declare(strict_types = 1);
 
 namespace JavierLeon9966\VanillaElytra\item;
 
-use pocketmine\item\Durable;
+use pocketmine\item\Armor;
 
-class Elytra extends Durable{
+class Elytra extends Armor{
 
-	public function getMaxDurability(): int{
-		return 433;
-	}
-
-	public function getMaxStackSize(): int{
-		return 1;
-	}
 }
