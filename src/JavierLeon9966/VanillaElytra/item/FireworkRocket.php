@@ -50,7 +50,7 @@ class FireworkRocket extends Fireworks{
 				);
 				$player->setMotion($newMotion);
 			}
-			$entity->setPotion($player->getPosition());
+			$entity->setPosition($player->getPosition());
 			$entity->setMotion($player->getMotion());
 		}), 1);
 
