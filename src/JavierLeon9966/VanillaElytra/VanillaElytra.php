@@ -9,7 +9,7 @@ use BlockHorizons\Fireworks\Loader as Fireworks;
 use pocketmine\event\Listener;
 use pocketmine\event\player\{PlayerMoveEvent, PlayerToggleGlideEvent, PlayerQuitEvent};
 use pocketmine\inventory\{ArmorInventory, CreativeInventory};
-use pocketmine\item\{ArmorTypeInfo, ItemIdentifier, ItemIds, ItemFactory, StringToItemParser};
+use pocketmine\item\{ArmorTypeInfo, ItemIdentifier, ItemFactory, ItemTypeIds, StringToItemParser};
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\{ClosureTask, TaskHandler};
 
@@ -31,7 +31,7 @@ final class VanillaElytra extends PluginBase implements Listener{
 		$creativeInventory = CreativeInventory::getInstance();
 		$stringToItemParser = StringToItemParser::getInstance();
 
-		$elytra = new Elytra(new ItemIdentifier(ItemIds::ELYTRA, 0), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST));
+		$elytra = new Elytra(new ItemIdentifier(ItemTypeIds::FIRST_UNUSED_ITEM_ID), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST));
 		$itemFactory->register($elytra, true);
 		$creativeInventory->add($elytra);
 		$stringToItemParser->register('elytra', static fn() => clone $elytra);
