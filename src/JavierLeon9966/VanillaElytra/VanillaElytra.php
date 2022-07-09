@@ -31,10 +31,14 @@ final class VanillaElytra extends PluginBase implements Listener{
 		$creativeInventory = CreativeInventory::getInstance();
 		$stringToItemParser = StringToItemParser::getInstance();
 
-		$elytra = new Elytra(new ItemIdentifier(ItemTypeIds::FIRST_UNUSED_ITEM_ID), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST));
-		$itemFactory->register($elytra, true);
-		$creativeInventory->add($elytra);
-		$stringToItemParser->register('elytra', static fn() => clone $elytra);
+        for($i = ItemTypeIds::FIRST_UNUSED_ITEM_ID; $i < ItemTypeIds::FIRST_UNUSED_ITEM_ID + 256; ++$i) {
+            if (!ItemFactory::getInstance()->isRegistered($i)) {
+                $elytra = new Elytra(new ItemIdentifier(ItemTypeIds::FIRST_UNUSED_ITEM_ID), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST));
+                $itemFactory->register($elytra, true);
+                $creativeInventory->add($elytra);
+                $stringToItemParser->register('elytra', static fn() => clone $elytra);
+            }
+        }
 		if(class_exists(Fireworks::class)){
 			$firework = new FireworkRocket(new ItemIdentifier(ItemIds::FIREWORKS, 0), 'Firework Rocket');
 			$itemFactory->register($firework, true);
