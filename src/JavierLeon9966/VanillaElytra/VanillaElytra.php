@@ -41,10 +41,15 @@ final class VanillaElytra extends PluginBase implements Listener{
 			}
 		}
 		if(class_exists(Fireworks::class)){
-			$firework = new FireworkRocket(new ItemIdentifier(ItemIds::FIREWORKS, 0), 'Firework Rocket');
-			$itemFactory->register($firework, true);
-			$creativeInventory->add($firework);
-			$stringToItemParser->register('firework_rocket', static fn() => clone $firework);
+			for($i = ItemTypeIds::FIRST_UNUSED_ITEM_ID; $i < ItemTypeIds::FIRST_UNUSED_ITEM_ID + 256; ++$i){
+				if(!ItemFactory::getInstance()->isRegistered($i)){
+					$firework = new FireworkRocket(new ItemIdentifier($i), 'Firework Rocket');
+					$itemFactory->register($firework, true);
+					$creativeInventory->add($firework);
+					$stringToItemParser->register('firework_rocket', static fn() => clone $firework);
+					return;
+				}
+			}
 		}
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 	}
