@@ -9,7 +9,7 @@ use BlockHorizons\Fireworks\Loader as Fireworks;
 use pocketmine\event\Listener;
 use pocketmine\event\player\{PlayerMoveEvent, PlayerToggleGlideEvent, PlayerQuitEvent};
 use pocketmine\inventory\{ArmorInventory, CreativeInventory};
-use pocketmine\item\{ArmorTypeInfo, ItemIdentifier, ItemFactory, ItemTypeIds, StringToItemParser};
+use pocketmine\item\{ArmorTypeInfo, ItemIdentifier, ItemIds, ItemFactory, StringToItemParser};
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\{ClosureTask, TaskHandler};
 
@@ -31,25 +31,15 @@ final class VanillaElytra extends PluginBase implements Listener{
 		$creativeInventory = CreativeInventory::getInstance();
 		$stringToItemParser = StringToItemParser::getInstance();
 
-		for($i = ItemTypeIds::FIRST_UNUSED_ITEM_ID; $i < ItemTypeIds::FIRST_UNUSED_ITEM_ID + 256; ++$i){
-			if(!ItemFactory::getInstance()->isRegistered($i)){
-				$elytra = new Elytra(new ItemIdentifier($i), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST));
-				$itemFactory->register($elytra, true);
-				$creativeInventory->add($elytra);
-				$stringToItemParser->register('elytra', static fn() => clone $elytra);
-				return;
-			}
-		}
+		$elytra = new Elytra(new ItemIdentifier(ItemIds::ELYTRA, 0), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST));
+		$itemFactory->register($elytra, true);
+		$creativeInventory->add($elytra);
+		$stringToItemParser->register('elytra', static fn() => clone $elytra);
 		if(class_exists(Fireworks::class)){
-			for($i = ItemTypeIds::FIRST_UNUSED_ITEM_ID; $i < ItemTypeIds::FIRST_UNUSED_ITEM_ID + 256; ++$i){
-				if(!ItemFactory::getInstance()->isRegistered($i)){
-					$firework = new FireworkRocket(new ItemIdentifier($i), 'Firework Rocket');
-					$itemFactory->register($firework, true);
-					$creativeInventory->add($firework);
-					$stringToItemParser->register('firework_rocket', static fn() => clone $firework);
-					return;
-				}
-			}
+			$firework = new FireworkRocket(new ItemIdentifier(ItemIds::FIREWORKS, 0), 'Firework Rocket');
+			$itemFactory->register($firework, true);
+			$creativeInventory->add($firework);
+			$stringToItemParser->register('firework_rocket', static fn() => clone $firework);
 		}
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 	}
