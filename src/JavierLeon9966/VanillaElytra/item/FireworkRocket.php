@@ -7,13 +7,10 @@ namespace JavierLeon9966\VanillaElytra\item;
 use BlockHorizons\Fireworks\entity\FireworksRocket;
 use BlockHorizons\Fireworks\item\Fireworks;
 
-use JavierLeon9966\VanillaElytra\VanillaElytra;
-
 use pocketmine\item\ItemUseResult;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataProperties;
 use pocketmine\player\Player;
-use pocketmine\scheduler\{CancelTaskException, ClosureTask};
-use pocketmine\utils\AssumptionFailedError;
 
 class FireworkRocket extends Fireworks{
 
@@ -26,32 +23,9 @@ class FireworkRocket extends Fireworks{
 
 		$location = $player->getLocation();
 		$entity = new FireworksRocket($location, $this);
+		$entity->getNetworkProperties()->setLong(EntityMetadataProperties::MINECART_HAS_DISPLAY, $player->getId());
+		$entity->setOwningEntity($player);
 		$entity->spawnToAll();
-
-		$duration = 20 * $this->getFlightDuration();
-		$plugin = $player->getServer()->getPluginManager()->getPlugin('VanillaElytra');
-		if(!$plugin instanceof VanillaElytra){
-			throw new AssumptionFailedError;
-		}
-
-		$plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(static function() use($duration, $entity, $player): void{
-			static $ticks = 0;
-			if(!$player->isOnline() or ++$ticks >= $duration){
-				throw new CancelTaskException;
-			}elseif($player->isGliding()){
-				$directionVector = $player->getDirectionVector();
-				$motionBefore = $player->getMotion();
-				$newMotion = $motionBefore->addVector($directionVector
-				    ->multiply(1.5)
-				    ->subtractVector($motionBefore)
-				    ->multiply(0.5)
-				    ->addVector($directionVector->multiply(0.1))
-				);
-				$player->setMotion($newMotion);
-			}
-			$entity->teleport($player->getPosition());
-			$entity->setMotion($player->getMotion());
-		}), 1);
 
 		return ItemUseResult::SUCCESS();
 	}
