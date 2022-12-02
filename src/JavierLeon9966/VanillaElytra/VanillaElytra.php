@@ -7,6 +7,7 @@ namespace JavierLeon9966\VanillaElytra;
 use BlockHorizons\Fireworks\Loader as Fireworks;
 
 use pocketmine\data\bedrock\item\ItemTypeNames;
+use pocketmine\data\bedrock\item\SavedItemData;
 use pocketmine\event\Listener;
 use pocketmine\event\player\{PlayerMoveEvent, PlayerToggleGlideEvent, PlayerQuitEvent};
 use pocketmine\inventory\{ArmorInventory, CreativeInventory};
@@ -29,20 +30,21 @@ final class VanillaElytra extends PluginBase implements Listener{
 	private array $glidingTicker = [];
 
 	public function onEnable(): void{
-		$globalItemDataHandlers = GlobalItemDataHandlers::getInstance();
-		$itemDeserializer = $globalItemDataHandlers->getDeserializer();
-		$itemSerializer = $globalItemDataHandlers->getSerializer();
+		$itemDeserializer = GlobalItemDataHandlers::getDeserializer();
+		$itemSerializer = GlobalItemDataHandlers::getSerializer();
 		$creativeInventory = CreativeInventory::getInstance();
 		$stringToItemParser = StringToItemParser::getInstance();
 
 		$elytra = new Elytra(new ItemIdentifier(ItemTypeIds::newId()), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST));
-		$itemDeserializer->map(ItemTypeNames::SHIELD, static fn() => $elytra);
+		$itemDeserializer->map(ItemTypeNames::ELYTRA, static fn() => clone $elytra);
+		$itemSerializer->map($elytra, static fn() => new SavedItemData(ItemTypeNames::ELYTRA));
 		$creativeInventory->add($elytra);
 		$stringToItemParser->register('elytra', static fn() => clone $elytra);
 
 		if(class_exists(Fireworks::class)){
 			$firework = new FireworkRocket(new ItemIdentifier(ItemTypeIds::newId()), 'Firework Rocket');
-			$itemFactory->register($firework, true);
+			$itemDeserializer->map(ItemTypeNames::FIREWORK_ROCKET, static fn() => clone $firework);
+			//Serializer already registered
 			$creativeInventory->add($firework);
 			$stringToItemParser->register('firework_rocket', static fn() => clone $firework);
 		}

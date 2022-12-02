@@ -14,7 +14,7 @@ use pocketmine\player\Player;
 
 class FireworkRocket extends Fireworks{
 
-	public function onClickAir(Player $player, Vector3 $directionVector): ItemUseResult{
+	public function onClickAir(Player $player, Vector3 $directionVector, array &$returnedItems): ItemUseResult{
 		if(!$player->isGliding()){
 			return ItemUseResult::NONE();
 		}
