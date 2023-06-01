@@ -53,7 +53,7 @@ final class VanillaElytra extends PluginBase implements Listener{
 			return;
 		}
 
-		$location = $player->getLocation();
+		$location = $event->getFrom();
 		if($location->pitch >= self::MINIMUM_PITCH and $location->pitch <= self::MAXIMUM_PITCH){
 			$player->resetFallDistance();
 		}
