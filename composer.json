@@ -5,8 +5,8 @@
   "minimum-stability": "dev",
   "license": "GPL-3.0-only",
   "require": {
-    "pocketmine/pocketmine-mp": "^4.1.0",
-    "blockhorizons/fireworks": "master"
+    "pocketmine/pocketmine-mp": "^5.0.0",
+    "javierleon9966/fireworks": "master"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.2.0",
@@ -17,15 +17,15 @@
     {
       "type": "package",
       "package": {
-        "name": "blockhorizons/fireworks",
+        "name": "javierleon9966/fireworks",
         "version": "master",
         "autoload": {
           "classmap": ["src/"]
         },
         "source": {
-          "url": "https://github.com/blockhorizons/fireworks",
+          "url": "https://github.com/javierleon9966/fireworks",
           "type": "git",
-          "reference": "4.0"
+          "reference": "pm5"
         }
       }
     }
