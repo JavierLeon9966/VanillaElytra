@@ -3,7 +3,7 @@
   "description": "A plugin that implements vanilla Elytra into PocketMine-MP",
   "type": "project",
   "minimum-stability": "dev",
-  "license": "GPL-3.0-only",
+  "license": "GPL-3.0-or-later",
   "require": {
     "pocketmine/pocketmine-mp": "^5.0.0",
     "javierleon9966/fireworks": "master"
