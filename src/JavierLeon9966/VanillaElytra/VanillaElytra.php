@@ -7,6 +7,7 @@ namespace JavierLeon9966\VanillaElytra;
 use BlockHorizons\Fireworks\entity\FireworksRocket;
 use BlockHorizons\Fireworks\item\Fireworks;
 
+use JavierLeon9966\VanillaElytra\item\ExtraVanillaItems;
 use pocketmine\data\bedrock\item\ItemTypeNames;
 use pocketmine\data\bedrock\item\SavedItemData;
 use pocketmine\event\EventPriority;
@@ -38,7 +39,7 @@ final class VanillaElytra extends PluginBase implements Listener{
 		$creativeInventory = CreativeInventory::getInstance();
 		$stringToItemParser = StringToItemParser::getInstance();
 
-		$elytra = new Elytra(new ItemIdentifier(ItemTypeIds::newId()), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST));
+		$elytra = ExtraVanillaItems::ELYTRA();
 		$itemDeserializer->map(ItemTypeNames::ELYTRA, static fn() => clone $elytra);
 		$itemSerializer->map($elytra, static fn() => new SavedItemData(ItemTypeNames::ELYTRA));
 		$creativeInventory->add($elytra);
