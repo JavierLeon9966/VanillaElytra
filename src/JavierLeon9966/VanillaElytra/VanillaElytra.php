@@ -4,19 +4,22 @@ declare(strict_types = 1);
 
 namespace JavierLeon9966\VanillaElytra;
 
-use BlockHorizons\Fireworks\Loader as Fireworks;
+use BlockHorizons\Fireworks\entity\FireworksRocket;
+use BlockHorizons\Fireworks\item\Fireworks;
 
 use pocketmine\data\bedrock\item\ItemTypeNames;
 use pocketmine\data\bedrock\item\SavedItemData;
+use pocketmine\event\EventPriority;
 use pocketmine\event\Listener;
-use pocketmine\event\player\{PlayerMoveEvent, PlayerToggleGlideEvent, PlayerQuitEvent};
+use pocketmine\event\player\{PlayerItemUseEvent, PlayerMoveEvent, PlayerToggleGlideEvent, PlayerQuitEvent};
 use pocketmine\inventory\{ArmorInventory, CreativeInventory};
 use pocketmine\item\{ArmorTypeInfo, ItemIdentifier, ItemTypeIds, StringToItemParser};
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataProperties;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\{ClosureTask, TaskHandler};
 use pocketmine\world\format\io\GlobalItemDataHandlers;
 
-use JavierLeon9966\VanillaElytra\item\{Elytra, FireworkRocket};
+use JavierLeon9966\VanillaElytra\item\Elytra;
 
 final class VanillaElytra extends PluginBase implements Listener{
 
@@ -41,14 +44,31 @@ final class VanillaElytra extends PluginBase implements Listener{
 		$creativeInventory->add($elytra);
 		$stringToItemParser->register('elytra', static fn() => clone $elytra);
 
-		if(class_exists(Fireworks::class)){
-			$firework = new FireworkRocket(new ItemIdentifier(ItemTypeIds::newId()), 'Firework Rocket');
-			$itemDeserializer->map(ItemTypeNames::FIREWORK_ROCKET, static fn() => clone $firework);
-			//Serializer already registered
-			$creativeInventory->add($firework);
-			$stringToItemParser->register('firework_rocket', static fn() => clone $firework);
-		}
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
+		if(!class_exists(Fireworks::class)){
+			return;
+		}
+		$this->getServer()->getPluginManager()->registerEvent(PlayerItemUseEvent::class, static function(PlayerItemUseEvent $event): void{
+			$player = $event->getPlayer();
+			$inventory = $player->getInventory();
+			$item = $inventory->getItemInHand();
+			if(!$item instanceof Fireworks){
+				return;
+			}
+			if(!$player->isGliding()){
+				return;
+			}
+
+			$item->pop();
+
+			$location = $player->getLocation();
+			$entity = new FireworksRocket($location, $item);
+			$entity->getNetworkProperties()->setLong(EntityMetadataProperties::MINECART_HAS_DISPLAY, $player->getId());
+			$entity->setOwningEntity($player);
+			$entity->spawnToAll();
+
+			$inventory->setItemInHand($item);
+		}, EventPriority::MONITOR, $this);
 	}
 
 	/**
