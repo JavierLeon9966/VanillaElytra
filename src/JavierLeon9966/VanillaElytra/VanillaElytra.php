@@ -84,7 +84,7 @@ final class VanillaElytra extends PluginBase implements Listener{
 		if($player->isOnGround()){
 			$player->setGliding(false);
 		}
-		$location = $event->getFrom();
+		$location = $event->getTo();
 		if($location->pitch >= self::MINIMUM_PITCH and $location->pitch <= self::MAXIMUM_PITCH){
 			$player->resetFallDistance();
 		}
