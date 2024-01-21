@@ -40,6 +40,6 @@ class ExtraVanillaItems{
 	}
 
 	protected static function setup(): void{
-		self::register('elytra', new Elytra(new ItemIdentifier(ItemTypeIds::newId()), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST)));
+		self::register('elytra', new Elytra(new ItemIdentifier(ItemTypeIds::newId()), 'Elytra', new ArmorTypeInfo(0, 433, ArmorInventory::SLOT_CHEST), ["elytra"]));
 	}
 }
